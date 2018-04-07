@@ -35,9 +35,32 @@
         <h1>Riverford Data Analytics</h1>
 
         <!-- TODO Add HTML containers for data visualisation -->
+        <div class="chart">
+            <canvas id="myChart" width="400" height="200"></canvas>
+         </div>
 
         <script>
-            var sourceData;
+           var sourceData;
+
+           // This function returns the data of the categories.
+           function getCategories(sourceData) {
+               var categories = [];
+               var categoriesSums = [];
+ 
+               for (var category in sourceData) {
+                    categories.push(category);
+                    var sumOfSubCategories = 0;
+                    for (var subcategory in sourceData[category]) {
+                        sumOfSubCategories += sourceData[category][subcategory];
+                    }
+                    categoriesSums.push(sumOfSubCategories);
+                }
+                return {
+                    categories: categories,
+                    sum: categoriesSums
+                }
+
+           }
 
             // Initial data load
             fetch("data.json", {
@@ -51,10 +74,52 @@
             }).then(function (data) {
                 sourceData = data;
 
+
                 // TODO: Build data visualisation
+                var categoryData = getCategories(sourceData);
+
+                var ctx = document.getElementById("myChart");
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: categoryData.categories,
+                        datasets: [{
+                            label: 'Unit',
+                            data: categoryData.sum,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.8)',
+                                'rgba(54, 162, 235, 0.8)',
+                                'rgba(255, 206, 86, 0.8)',
+                                'rgba(75, 192, 192, 0.8)',
+                                'rgba(153, 102, 255, 0.8)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255,99,132,1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 4 
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true
+                                }
+                            }]
+                        }
+                    }
+                });
 
             });
 
         </script>
+
+
     </body>
 </html>
