@@ -39,8 +39,13 @@
             <canvas id="myChart" width="400" height="200"></canvas>
          </div>
 
+        <div class="charttwo">
+            <canvas id="myChartTwo" width="400" height="200"></canvas>
+         </div> 
+
         <script>
            var sourceData;
+           var myChartTwo;
 
            // This function returns the data of the categories.
            function getCategories(sourceData) {
@@ -62,6 +67,38 @@
 
            }
 
+           function getSubCategories(sourceData) {
+                var topTenByCat = {};
+
+                for (var category in sourceData) {
+                    var sorting = [];
+                    for (var subcategory in sourceData[category]) {
+                        sorting.push([subcategory, sourceData[category][subcategory]]);
+                    }
+                    sorting.sort(function(a,b) {
+                            return b[1] - a[1];
+                        });
+                    sorting = sorting.slice(0,10);
+                    topTenByCat[category] = sorting; 
+                }
+
+               var resultObj = {}
+
+                for (var category in topTenByCat) {
+                    var subcategories = [];
+                    var subcategoryUnits = [];
+                    for (var i = 0; i < topTenByCat[category].length; i++) {
+                        subcategories.push(topTenByCat[category][i][0]);
+                        subcategoryUnits.push(topTenByCat[category][i][1]); 
+                    }
+                    resultObj[category] = { subcategories: subcategories,
+                                                        subcategoryUnits: subcategoryUnits }; 
+                }
+                
+                return resultObj;
+           }
+
+
             // Initial data load
             fetch("data.json", {
                 method: "GET",
@@ -77,6 +114,26 @@
 
                 // TODO: Build data visualisation
                 var categoryData = getCategories(sourceData);
+                var bgcolourList = [ 'rgba(255, 99, 132, 0.8)',
+                                   'rgba(54, 162, 235, 0.8)',
+                                   'rgba(255, 206, 86, 0.8)',
+                                   'rgba(75, 192, 192, 0.8)',
+                                   'rgba(153, 102, 255, 0.8)',
+                                   'rgba(255, 159, 64, 0.8)',
+                                   'rgba(240, 133, 193, 0.8)',
+                                   'rgba(76, 173, 238, 0.8)',
+                                   'rgba(238, 229, 125, 0.8)',
+                                   'rgba(126, 214, 214, 0.8)']
+                var brcolourList = [ 'rgba(255,99,132,1)',
+                                     'rgba(54, 162, 235, 1)',
+                                     'rgba(255, 206, 86, 1)',
+                                     'rgba(75, 192, 192, 1)',
+                                     'rgba(153, 102, 255, 1)',
+                                     'rgba(255, 159, 64, 1)',
+                                     'rgba(202, 77, 147, 1)',
+                                     'rgba(32, 139, 211, 1)',
+                                     'rgba(230, 213, 26, 1)',
+                                     'rgba(70, 167, 167, 1)']
 
                 var ctx = document.getElementById("myChart");
                 var myChart = new Chart(ctx, {
@@ -86,22 +143,8 @@
                         datasets: [{
                             label: 'Unit',
                             data: categoryData.sum,
-                            backgroundColor: [
-                                'rgba(255, 99, 132, 0.8)',
-                                'rgba(54, 162, 235, 0.8)',
-                                'rgba(255, 206, 86, 0.8)',
-                                'rgba(75, 192, 192, 0.8)',
-                                'rgba(153, 102, 255, 0.8)',
-                                'rgba(255, 159, 64, 0.2)'
-                            ],
-                            borderColor: [
-                                'rgba(255,99,132,1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 206, 86, 1)',
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(153, 102, 255, 1)',
-                                'rgba(255, 159, 64, 1)'
-                            ],
+                            backgroundColor: bgcolourList,
+                            borderColor: brcolourList,
                             borderWidth: 4 
                         }]
                     },
@@ -112,10 +155,41 @@
                                     beginAtZero:true
                                 }
                             }]
-                        }
+                        },
+                        events: ['click'],
+                        onClick: function(event, active) {
+
+                            if (myChartTwo != undefined) {
+                                myChartTwo.destroy();
+                            }
+                            var subCategoryData = getSubCategories(sourceData)
+                            var ctxTwo = document.getElementById("myChartTwo");
+                            myChartTwo = new Chart(ctxTwo, {
+                                type: 'horizontalBar',
+                                data: {
+                                    labels: subCategoryData[active[0]._model.label]["subcategories"],
+                                    datasets: [{
+                                        label: 'Units',
+                                        data: subCategoryData[active[0]._model.label]["subcategoryUnits"],
+                                        backgroundColor: bgcolourList,
+                                        borderColor: brcolourList,
+                                        borderWidth: 4
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        xAxes: [{
+                                            ticks: {
+                                                beginAtZero: false
+                                            }
+                                        }]
+                                    }
+                                }
+                            });
+                            
+                        } 
                     }
                 });
-
             });
 
         </script>
