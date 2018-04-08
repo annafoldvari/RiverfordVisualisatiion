@@ -34,15 +34,18 @@
     <body>
         <h1>Riverford Data Analytics</h1>
 
+
         <!-- TODO Add HTML containers for data visualisation -->
-        <div class="chart">
-            <canvas id="myChart" width="400" height="250"></canvas>
-         </div>
 
-        <div class="charttwo">
-            <canvas id="myChartTwo" width="400" height="250"></canvas>
-         </div> 
+        <div class="container">
+            <div class="chart">
+                <canvas id="myChart"></canvas>
+            </div>
 
+            <div class="chart">
+                <canvas id="myChartTwo"></canvas>
+            </div> 
+        </div>
         <script>
            var sourceData;
            var myChartTwo;
@@ -141,7 +144,7 @@
                     data: {
                         labels: categoryData.categories,
                         datasets: [{
-                            label: 'Unit',
+                            label: 'Sold units',
                             data: categoryData.sum,
                             backgroundColor: bgcolourList,
                             borderColor: brcolourList,
@@ -162,6 +165,13 @@
                             fontSize: 30,
                             padding: 45
                         },
+                        responsive: true,
+                        maintainAspectRatio: false, 
+                        layout: {
+                            padding: {
+                                bottom: 10
+                            }
+                        }, 
                         events: ['click'],
                         onClick: function(event, active) {
 
@@ -175,7 +185,7 @@
                                 data: {
                                     labels: subCategoryData[active[0]._model.label]["subcategories"],
                                     datasets: [{
-                                        label: 'Units',
+                                        label: 'Sold units',
                                         data: subCategoryData[active[0]._model.label]["subcategoryUnits"],
                                         backgroundColor: bgcolourList,
                                         borderColor: brcolourList,
@@ -195,7 +205,14 @@
                                         text: 'Ten most popular products of category ' + active[0]._model.label,
                                         fontSize: 30,
                                         padding: 45
-                                    }
+                                    },
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    layout: {
+                                        padding: {
+                                            bottom: 10
+                                        }
+                                    } 
 
                                 }
                             });
