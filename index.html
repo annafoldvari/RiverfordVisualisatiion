@@ -36,11 +36,11 @@
 
         <!-- TODO Add HTML containers for data visualisation -->
         <div class="chart">
-            <canvas id="myChart" width="400" height="200"></canvas>
+            <canvas id="myChart" width="400" height="250"></canvas>
          </div>
 
         <div class="charttwo">
-            <canvas id="myChartTwo" width="400" height="200"></canvas>
+            <canvas id="myChartTwo" width="400" height="250"></canvas>
          </div> 
 
         <script>
@@ -156,6 +156,12 @@
                                 }
                             }]
                         },
+                        title: {
+                            display: true,
+                            text: 'Popularity of categories', 
+                            fontSize: 30,
+                            padding: 45
+                        },
                         events: ['click'],
                         onClick: function(event, active) {
 
@@ -183,7 +189,14 @@
                                                 beginAtZero: false
                                             }
                                         }]
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Ten most popular products of category ' + active[0]._model.label,
+                                        fontSize: 30,
+                                        padding: 45
                                     }
+
                                 }
                             });
                             
