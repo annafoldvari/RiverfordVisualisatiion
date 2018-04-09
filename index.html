@@ -131,13 +131,14 @@
                     mySubcategoryChart.destroy();
                 }
 
+                categoryName = active[0]._model.label    
                 mySubcategoryChart = new Chart(ctxTwo, {
                     type: 'horizontalBar',
                     data: {
-                        labels: subCategoryData[active[0]._model.label]["subcategories"],
+                        labels: subCategoryData[categoryName]["subcategories"],
                         datasets: [{
                             label: 'Sold units',
-                            data: subCategoryData[active[0]._model.label]["subcategoryUnits"],
+                            data: subCategoryData[categoryName]["subcategoryUnits"],
                             backgroundColor: bgcolourList,
                             borderColor: brcolourList,
                             borderWidth: 4
@@ -153,7 +154,7 @@
                         },
                         title: {
                             display: true,
-                            text: 'Ten most popular products of category ' + active[0]._model.label,
+                            text: 'Ten most popular products of category ' + categoryName,
                             fontSize: 30,
                             padding: 45
                         },
