@@ -127,11 +127,14 @@
                 var subCategoryData = getSubCategories(sourceData);
                 var ctxTwo = document.getElementById("mySubcategoryChart");
 
+                if (active.length == 0) {
+                    return;
+                }
                 if (mySubcategoryChart != undefined) {
                     mySubcategoryChart.destroy();
                 }
 
-                categoryName = active[0]._model.label    
+                categoryName = active[0]._model.label;    
                 mySubcategoryChart = new Chart(ctxTwo, {
                     type: 'horizontalBar',
                     data: {
