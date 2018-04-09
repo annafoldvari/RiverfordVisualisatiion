@@ -123,8 +123,8 @@
            }
 
            //This is the function that creates the second top10 subcategories chart on clicking at a category.
-           function HandleSubcategoriesChart(event, active) {
-                var subCategoryData = getSubCategories(sourceData)
+           function handleSubcategoriesChart(event, active) {
+                var subCategoryData = getSubCategories(sourceData);
                 var ctxTwo = document.getElementById("mySubcategoryChart");
 
                 if (mySubcategoryChart != undefined) {
@@ -132,41 +132,41 @@
                 }
 
                 mySubcategoryChart = new Chart(ctxTwo, {
-                                type: 'horizontalBar',
-                                data: {
-                                    labels: subCategoryData[active[0]._model.label]["subcategories"],
-                                    datasets: [{
-                                        label: 'Sold units',
-                                        data: subCategoryData[active[0]._model.label]["subcategoryUnits"],
-                                        backgroundColor: bgcolourList,
-                                        borderColor: brcolourList,
-                                        borderWidth: 4
-                                    }]
-                                },
-                                options: {
-                                    scales: {
-                                        xAxes: [{
-                                            ticks: {
-                                                beginAtZero: false
-                                            }
-                                        }]
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: 'Ten most popular products of category ' + active[0]._model.label,
-                                        fontSize: 30,
-                                        padding: 45
-                                    },
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    layout: {
-                                        padding: {
-                                            bottom: 10
-                                        }
-                                    } 
-
+                    type: 'horizontalBar',
+                    data: {
+                        labels: subCategoryData[active[0]._model.label]["subcategories"],
+                        datasets: [{
+                            label: 'Sold units',
+                            data: subCategoryData[active[0]._model.label]["subcategoryUnits"],
+                            backgroundColor: bgcolourList,
+                            borderColor: brcolourList,
+                            borderWidth: 4
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    beginAtZero: false
                                 }
-                            });
+                            }]
+                        },
+                        title: {
+                            display: true,
+                            text: 'Ten most popular products of category ' + active[0]._model.label,
+                            fontSize: 30,
+                            padding: 45
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        layout: {
+                            padding: {
+                                bottom: 10
+                            }
+                        } 
+
+                    }
+                });
            }
 
 
@@ -220,7 +220,7 @@
                             }
                         }, 
                         events: ['click'],
-                        onClick: HandleSubcategoriesChart 
+                        onClick: handleSubcategoriesChart 
                     }
                 });
             });
